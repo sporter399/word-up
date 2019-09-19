@@ -21,6 +21,7 @@
         <!--
         a section for things that should always be showing,
         even if the game has not yet started -->
+        
         <section id="pregame">
 
             <!--
@@ -29,10 +30,11 @@
             <div id="scoreboard">
                 <div>
                     <h5>Time Remaining</h5>
-                    <h2 class="scoreboard-data">60</h2>
+                    
                     <!-- TODO 2
                     Make the time remaining update with the correct value
                     -->
+                    <h2 class="scoreboard-data">{{ secondsRemaining }}</h2>
                 </div>
                 <div>
                     <h5>Score</h5>
@@ -43,7 +45,9 @@
             <!-- TODO 1
             Make a "New Game" button
             -->
+            <input type="submit" value="New Game" @click="startGame()"/>
         </section>
+        
 
         <!-- things that should not show up until the (first) game has started -->
         <section id="game">
@@ -65,7 +69,9 @@
                 :class="{ 'contains-disallowed': !containsOnlyAllowedLetters }"
             >
                 <!-- the actual text box where the user types -->
-                <input type="text" />
+                <input type="text" id="userInput" autofocus/>
+                <!-- textbox must appear and be autofocussed with cursor in it at click-->
+
                 <!-- TODO 3 make this input autofocused when it's created. -->
                 <!-- TODO 6 keep this in sync with the "currentAttempt" value in your Vue. -->
                 <!-- TODO 9 disable the input when the timer runs out -->

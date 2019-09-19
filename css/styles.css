@@ -116,8 +116,8 @@ main {
 input {
     text-align: center;
     padding: 1%;
-    font-size: 30px;
-    color: grey;
+    font-size: 20px;
+    color: gray;
 }
 
 input:focus {

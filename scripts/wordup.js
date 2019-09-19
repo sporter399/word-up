@@ -116,8 +116,10 @@ function add(a, b) {
 
 var app = new Vue({
     el: '.mount-point',
+    
     data: function() {
         // all the stuff we need to keep track of
+        document.getElementById("userInput").style.display = 'none';
         return {
             // how much time is left in the current game
             secondsRemaining: GAME_DURATION,
@@ -137,6 +139,8 @@ var app = new Vue({
         };
     },
     computed: {
+
+        
         currentScore: function () {
             /**
              * Returns the user's current total score, which is the sum of the
@@ -201,6 +205,9 @@ var app = new Vue({
 
         startGame: function() {
             // Resets the data to a starting state, and then starts the timer
+            console.log("line204");
+            document.getElementById("userInput").style.display = 'block';
+            document.getElementById("userInput").focus();
             this.endGame(); // terminate any existing games before starting a new one.
             this.gameHasStarted = true;
             this.secondsRemaining = GAME_DURATION,
