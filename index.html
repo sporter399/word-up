@@ -46,12 +46,11 @@
             Make a "New Game" button
             -->
             <input type="submit" value="New Game" @click="startGame()"/>
-        </section>
         
 
         <!-- things that should not show up until the (first) game has started -->
         <section id="game">
-
+            <p>Spell as many words as you can using only these letters</p>
             <!-- TODO 4
             Add some instructions so the user knows what to do.
             -->
@@ -60,7 +59,10 @@
                 <!-- TODO 5
                 Fill this container with a <letter-chip> for each value in allowedLetters
                 -->
-
+                <template v-for="letter in allowedLetters">
+                        
+                        <letter-chip :letter="letter" :value="letterScore(letter)"></letter-chip>
+                    </template>
             </div>
 
             <!-- the form via which the user attempts to submit new words -->
@@ -69,17 +71,26 @@
                 :class="{ 'contains-disallowed': !containsOnlyAllowedLetters }"
             >
                 <!-- the actual text box where the user types -->
-                <input type="text" id="userInput" autofocus/>
+                <input type="text" id="userInput" v-model="currentAttempt" :disabled="gameIsOver" autofocus/>
                 <!-- textbox must appear and be autofocussed with cursor in it at click-->
 
                 <!-- TODO 3 make this input autofocused when it's created. -->
                 <!-- TODO 6 keep this in sync with the "currentAttempt" value in your Vue. -->
+                
                 <!-- TODO 9 disable the input when the timer runs out -->
                 <!-- TODO 10 if the user presses 'enter', submit the current word -->
 
                 <br>
                 <div class="disallowed-letters">
                     <!-- TODO 8 add a <span> for each disallowed letter here -->
+                       
+
+                    <li v-for="(letter) in disallowedLettersInWord">
+                        
+                        <span>{{ letter }}</span>
+
+
+                    </li>
                 </div>
             </div>
 

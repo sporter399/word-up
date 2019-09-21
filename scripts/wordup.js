@@ -60,6 +60,7 @@ var scrabblePointsForEachLetter = {
  * Given a letter, returns the score of that letter (case-insensitive)
  */
 function letterScore(letter) {
+    console.log("line63");
     return scrabblePointsForEachLetter[letter.toLowerCase()];
 }
 
@@ -119,13 +120,17 @@ var app = new Vue({
     
     data: function() {
         // all the stuff we need to keep track of
-        document.getElementById("userInput").style.display = 'none';
+        //document.getElementById("userInput").style.display = 'none';
+        
         return {
+            isTextDisabled: true,
+            
             // how much time is left in the current game
             secondsRemaining: GAME_DURATION,
 
             // a list of the 7 letters that the player is allowed to use
             allowedLetters: [],
+            
 
             // the word that the user is currently typing
             currentAttempt: "",
@@ -136,10 +141,19 @@ var app = new Vue({
             // a timeoutID that can be used to clear a previously set timer
             // (don't worry about this one, you won't have to mess with it)
             timer: null,
+            
         };
     },
     computed: {
 
+        gameIsOver: function () {
+            if (this.secondsRemaining === 0) {
+                return true;
+            } else
+                return false;
+                
+
+        },
         
         currentScore: function () {
             /**
@@ -180,8 +194,13 @@ var app = new Vue({
              * meaning it is not a member of the .allowedLetters list from the current data
              */
 
+            
+            if (this.allowedLetters.includes(letter)) {
             //TODO 7 actually check if the letter is disallowed
-            return false;
+                return false;
+            } else
+                return true;
+            
         },
 
         // The next couple lines are odd.
@@ -206,9 +225,11 @@ var app = new Vue({
         startGame: function() {
             // Resets the data to a starting state, and then starts the timer
             console.log("line204");
-            document.getElementById("userInput").style.display = 'block';
+
+            //document.getElementById("userInput").style.display = 'block';
             document.getElementById("userInput").focus();
             this.endGame(); // terminate any existing games before starting a new one.
+            this.isTextDisabled = false;
             this.gameHasStarted = true;
             this.secondsRemaining = GAME_DURATION,
             this.allowedLetters = this.generateAllowedLetters();
