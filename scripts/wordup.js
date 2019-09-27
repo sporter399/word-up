@@ -247,7 +247,9 @@ var app = new Vue({
              * Refrains from adding a new entry if the model already contains
              * a wordSubmission whose word is the same
              */
-
+            console.log("word at line 250"   + word);
+            this.wordSubmissions.push(word);
+            document.getElementById("userInput").value = "";
             // Do we already have a wordSubmission with this word?
             // TODO 17
             // replace the hardcoded 'false' with the real answer
@@ -269,6 +271,7 @@ var app = new Vue({
             // now that we've added the word, clear out the text input.
         },
         checkIfWordIsReal: function(word) {
+            console.log("word at 274    "  +  word);
             /**
              * Given a word, checks to see if that word actually exists in the dictionary.
              *
@@ -277,10 +280,10 @@ var app = new Vue({
              */
 
             // TODO 12 what should the url be?
-            fetch(`www.example.com`)
+            fetch('https://www.dictionaryapi.com/api/v3/references/collegiate/json/?key=e5b3dbff-24df-4742-90be-a8c3301c9e18')
                 .then(response => (response.ok ? response.json() : Promise.reject(response)))
                 .then(resp => {
-                    console.log("We received a response from Pearson!");
+                    console.log("The API fetch is fine");
 
                     // let's print the response to the console so we can take a looksie
                     console.log(resp);
@@ -289,8 +292,19 @@ var app = new Vue({
                     // Replace the 'true' below.
                     // If the response contains any results, then the word is legitimate.
                     // Otherwise, it is not.
-                    var isARealWord = true;
+                    //var isARealWord = true;
 
+                  
+
+                    
+                    if (resp.contains(word)) {
+                        console.log("the word is real")
+
+
+                    } else {
+                        console.log("the word is not real")
+                    }  
+                    
                     // TODO 14
                     // Update the data to say that the word is real.
                     // You'll have to find the correct entry in this.wordSubmissions,

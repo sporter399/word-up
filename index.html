@@ -69,9 +69,10 @@
             <div
                 id="word-attempt-form"
                 :class="{ 'contains-disallowed': !containsOnlyAllowedLetters }"
-            >
+            >   
                 <!-- the actual text box where the user types -->
-                <input type="text" id="userInput" v-model="currentAttempt" :disabled="gameIsOver" autofocus/>
+                <input type="text" id="userInput" v-model="currentAttempt" :disabled="gameIsOver" 
+                @keyup.enter="addNewWordSubmission(currentAttempt)" autofocus/>
                 <!-- textbox must appear and be autofocussed with cursor in it at click-->
 
                 <!-- TODO 3 make this input autofocused when it's created. -->
@@ -97,6 +98,12 @@
             <!-- a container to display the user's word submissions -->
             <div id="word-submissions">
                 <!-- TODO 11 add a <submitted-word> component for each word here -->
+                <div class="submitted-word">
+                <template v-for="word in wordSubmissions">
+                    <span>{{ word }}</span> 
+                    <submitted-word :word="word" :score="wordScore(word)" :is-real-word="checkIfWordIsReal(word)"></submitted-word>
+                </template>
+            </div>
             </div>
         </section>
     </main>
