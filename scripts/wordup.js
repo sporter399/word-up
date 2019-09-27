@@ -71,16 +71,16 @@ function letterScore(letter) {
  * Returns a score of 0 if the word contains any disallowed letters.
  */
 function wordScore(word) {
+    
     // split the word into a list of letters
-    var letters = word.split("");
+    var letters = word.toString().split("");
+    console.log("letters at line 77   " + letters);
 
-    // TODO 15
-    // Replace the empty list below.
-    // Map the list of letters into a list of scores, one for each letter.
-    var letterScores = [];
-
+    let letterScores = letters.map(l => scrabblePointsForEachLetter[l])    
+  
     // return the total sum of the letter scores
     return letterScores.reduce(add, 0);
+  
 }
 
 
@@ -261,6 +261,7 @@ var app = new Vue({
                 this.wordSubmissions.push({
                     word: word,
                     loading: true,
+                    isRealWord: null,
                 });
 
                 // Now, check against the api to see if the word is real.
@@ -271,7 +272,7 @@ var app = new Vue({
             // now that we've added the word, clear out the text input.
         },
         checkIfWordIsReal: function(word) {
-            console.log("word at 274    "  +  word);
+            
             /**
              * Given a word, checks to see if that word actually exists in the dictionary.
              *
@@ -283,11 +284,7 @@ var app = new Vue({
             fetch('https://www.dictionaryapi.com/api/v3/references/collegiate/json/' + word.word + '?key=e5b3dbff-24df-4742-90be-a8c3301c9e18')
                 .then(response => (response.ok ? response.json() : Promise.reject(response)))
                 .then(resp => {
-                    console.log("The API fetch is fine");
-
-                    // let's print the response to the console so we can take a looksie
-                    console.log("index 0 of response"   + JSON.stringify(resp[0]));
-
+                    
                     // TODO 13
                     // Replace the 'true' below.
                     // If the response contains any results, then the word is legitimate.
@@ -295,16 +292,24 @@ var app = new Vue({
                     //var isARealWord = true;
 
                   
-                    /*
                     
-                    if (resp[0] == word) {
-                        console.log("the word is real")
+                    
+                    if (resp[0] != undefined) {//see line 261, characteristics of the word already in this.wordSubmissions, perhaps this.wordSubmissions[word]
+                        
+                        var index = this.wordSubmissions.findIndex(function(element) {
+                            return element == word;
+                          });
+                        console.log("this is the index of the word found in wordSubmission:     " + index);
+                        this.wordSubmissions[index].isRealWord = true
+                        this.wordSubmissions[index].loading = false
+                        wordScore(word);
 
 
                     } else {
-                        console.log("the word is not real")
+                        this.wordSubmissions[index].isRealWord = false
+                        this.wordSubmissions[index].loading = false
                     }  
-                    */
+                    
                     // TODO 14
                     // Update the data to say that the word is real.
                     // You'll have to find the correct entry in this.wordSubmissions,
