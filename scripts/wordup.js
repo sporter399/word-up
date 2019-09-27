@@ -280,13 +280,13 @@ var app = new Vue({
              */
 
             // TODO 12 what should the url be?
-            fetch('https://www.dictionaryapi.com/api/v3/references/collegiate/json/?key=e5b3dbff-24df-4742-90be-a8c3301c9e18')
+            fetch('https://www.dictionaryapi.com/api/v3/references/collegiate/json/' + word.word + '?key=e5b3dbff-24df-4742-90be-a8c3301c9e18')
                 .then(response => (response.ok ? response.json() : Promise.reject(response)))
                 .then(resp => {
                     console.log("The API fetch is fine");
 
                     // let's print the response to the console so we can take a looksie
-                    console.log(resp);
+                    console.log("index 0 of response"   + JSON.stringify(resp[0]));
 
                     // TODO 13
                     // Replace the 'true' below.
@@ -295,16 +295,16 @@ var app = new Vue({
                     //var isARealWord = true;
 
                   
-
+                    /*
                     
-                    if (resp.contains(word)) {
+                    if (resp[0] == word) {
                         console.log("the word is real")
 
 
                     } else {
                         console.log("the word is not real")
                     }  
-                    
+                    */
                     // TODO 14
                     // Update the data to say that the word is real.
                     // You'll have to find the correct entry in this.wordSubmissions,
