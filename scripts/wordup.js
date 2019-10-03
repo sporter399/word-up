@@ -71,7 +71,7 @@ function letterScore(letter) {
  * Returns a score of 0 if the word contains any disallowed letters.
  */
 function wordScore(word) {
-    
+    console.log("how many times does wordScore execute?");
     // split the word into a list of letters
     var letters = word.toString().split("");
 
@@ -283,8 +283,8 @@ var app = new Vue({
                     // Replace the 'true' below.
                     // If the response contains any results, then the word is legitimate.
                     // Otherwise, it is not.
-
-                   if (resp[0] != undefined) {
+                   console.log("type of resp    " + typeof resp[0]);
+                   if (typeof resp[0] !== "string") {
                         
 
                         word.isRealWord = true;
