@@ -60,7 +60,7 @@ var scrabblePointsForEachLetter = {
  * Given a letter, returns the score of that letter (case-insensitive)
  */
 function letterScore(letter) {
-    console.log("line63");
+    
     return scrabblePointsForEachLetter[letter.toLowerCase()];
 }
 
@@ -74,13 +74,11 @@ function wordScore(word) {
     
     // split the word into a list of letters
     var letters = word.toString().split("");
-    console.log("letters at line 77   " + letters);
 
     let letterScores = letters.map(l => scrabblePointsForEachLetter[l])    
-  
     // return the total sum of the letter scores
+   
     return letterScores.reduce(add, 0);
-  
 }
 
 
@@ -224,9 +222,7 @@ var app = new Vue({
 
         startGame: function() {
             // Resets the data to a starting state, and then starts the timer
-            console.log("line204");
 
-            //document.getElementById("userInput").style.display = 'block';
             document.getElementById("userInput").focus();
             this.endGame(); // terminate any existing games before starting a new one.
             this.isTextDisabled = false;
@@ -247,10 +243,8 @@ var app = new Vue({
              * Refrains from adding a new entry if the model already contains
              * a wordSubmission whose word is the same
              */
-            console.log("word at line 250"   + word);
-            this.wordSubmissions.push(word);
             document.getElementById("userInput").value = "";
-            // Do we already have a wordSubmission with this word?
+            // Do we already have a wordSubmission with this word? 
             // TODO 17
             // replace the hardcoded 'false' with the real answer
             var alreadyUsed = false;
@@ -258,15 +252,15 @@ var app = new Vue({
                 // add the word, with it's score.
                 // set loading to true, and isRealWord to null, to represent
                 // that we're not sure yet if this is a real word.
-                this.wordSubmissions.push({
-                    word: word,
-                    loading: true,
-                    isRealWord: null,
-                });
-
-                // Now, check against the api to see if the word is real.
+                wordProps = { 
+                    word: word, 
+                    score: wordScore(word),
+                    loading: true 
+                }
+                this.wordSubmissions.push(wordProps);
+                 // Now, check against the api to see if the word is real.
                 // when the api call comes back, we can update loading and isRealWord.
-                this.checkIfWordIsReal(word);
+                this.checkIfWordIsReal(wordProps);
             }
             // TODO 10
             // now that we've added the word, clear out the text input.
@@ -289,25 +283,18 @@ var app = new Vue({
                     // Replace the 'true' below.
                     // If the response contains any results, then the word is legitimate.
                     // Otherwise, it is not.
-                    //var isARealWord = true;
 
-                  
-                    
-                    
-                    if (resp[0] != undefined) {//see line 261, characteristics of the word already in this.wordSubmissions, perhaps this.wordSubmissions[word]
+                   if (resp[0] != undefined) {
                         
-                        var index = this.wordSubmissions.findIndex(function(element) {
-                            return element == word;
-                          });
-                        console.log("this is the index of the word found in wordSubmission:     " + index);
-                        this.wordSubmissions[index].isRealWord = true
-                        this.wordSubmissions[index].loading = false
-                        wordScore(word);
 
+                        word.isRealWord = true;
+                        word.loading = false;
+                        console.log("isREalWord line 292      " + word.isRealWord);
 
                     } else {
-                        this.wordSubmissions[index].isRealWord = false
-                        this.wordSubmissions[index].loading = false
+                        word.isRealWord = false;
+                        console.log("are any words false?");
+                        word.loading = false;
                     }  
                     
                     // TODO 14
