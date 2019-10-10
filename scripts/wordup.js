@@ -71,7 +71,6 @@ function letterScore(letter) {
  * Returns a score of 0 if the word contains any disallowed letters.
  */
 function wordScore(word) {
-    console.log("how many times does wordScore execute?");
     // split the word into a list of letters
     var letters = word.toString().split("");
 
@@ -136,6 +135,8 @@ var app = new Vue({
             // a list of the words the user has previously submitted in the current game
             wordSubmissions: [],
 
+            scoreTotal: 0,
+
             // a timeoutID that can be used to clear a previously set timer
             // (don't worry about this one, you won't have to mess with it)
             timer: null,
@@ -154,6 +155,7 @@ var app = new Vue({
         },
         
         currentScore: function () {
+          
             /**
              * Returns the user's current total score, which is the sum of the
              * scores of all the wordSubmissions whose word is a real dictionary word
@@ -161,7 +163,16 @@ var app = new Vue({
             // TODO 16
             // add up all the wordScore values from the words in this.wordSubmissions
             // be sure not to include any that aren't real words.
-            return 0;
+            for (var i = 0; i < this.wordSubmissions.length; i++) {
+                
+               var retWord = this.wordSubmissions[i];
+               console.log("retWord.word   " + retWord.word);
+               console.log("is retWord real:    " + Boolean(retWord.isRealWord));
+
+            }
+            return this.scoreTotal;
+            
+            
         },
         gameInProgress: function() {
             return this.secondsRemaining > 0 && this.timer !== null;
@@ -230,6 +241,7 @@ var app = new Vue({
             this.secondsRemaining = GAME_DURATION,
             this.allowedLetters = this.generateAllowedLetters();
             this.wordSubmissions = [];
+            this.scoreTotal = 0;
             this.currentAttempt = '';
             this.timer = this.startTimer();
         },
@@ -261,9 +273,10 @@ var app = new Vue({
                  // Now, check against the api to see if the word is real.
                 // when the api call comes back, we can update loading and isRealWord.
                 this.checkIfWordIsReal(wordProps);
+                
             }
             // TODO 10
-            // now that we've added the word, clear out the text input.
+            // now that we've added the word, clear out the text input./YOU STILL HAVEN'T DONE THIS
         },
         checkIfWordIsReal: function(word) {
             
@@ -278,18 +291,15 @@ var app = new Vue({
             fetch('https://www.dictionaryapi.com/api/v3/references/collegiate/json/' + word.word + '?key=e5b3dbff-24df-4742-90be-a8c3301c9e18')
                 .then(response => (response.ok ? response.json() : Promise.reject(response)))
                 .then(resp => {
-                    
-                    // TODO 13
-                    // Replace the 'true' below.
-                    // If the response contains any results, then the word is legitimate.
-                    // Otherwise, it is not.
-                   console.log("type of resp    " + typeof resp[0]);
                    if (typeof resp[0] !== "string") {
                         
 
                         word.isRealWord = true;
                         word.loading = false;
+                        
                         console.log("isREalWord line 292      " + word.isRealWord);
+                        
+
 
                     } else {
                         word.isRealWord = false;
