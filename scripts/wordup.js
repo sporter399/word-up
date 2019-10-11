@@ -135,7 +135,7 @@ var app = new Vue({
             // a list of the words the user has previously submitted in the current game
             wordSubmissions: [],
 
-            scoreTotal: 0,
+            //scoreTotal: 0,
 
             // a timeoutID that can be used to clear a previously set timer
             // (don't worry about this one, you won't have to mess with it)
@@ -155,8 +155,8 @@ var app = new Vue({
         },
         
         currentScore: function () {
-          
-            console.dir("wordSubmissions line 159    "   + JSON.stringify(this.wordSubmissions));
+            JSON.stringify(this.wordSubmissions);  
+            scoreTotal = 0;          
              //Returns the user's current total score, which is the sum of the
              //scores of all the wordSubmissions whose word is a real dictionary word
              
@@ -166,12 +166,14 @@ var app = new Vue({
             for (var i = 0; i < this.wordSubmissions.length; i++) {
                 
                var retWord = this.wordSubmissions[i];
-               console.log("retWord.word   " + retWord.word);
-               console.log("regWord.score      " + retWord.score);
-               console.log("is retWord real:    " + Boolean(retWord.isRealWord));
+               
+               if (Boolean(retWord.isRealWord) == true) {//this is better but the loop is vallid points after entry of invalid word
+                   
+                   scoreTotal += retWord.score;
+               }
 
             }
-            return this.scoreTotal;
+            return scoreTotal;
             
             
         },
@@ -243,7 +245,7 @@ var app = new Vue({
             this.secondsRemaining = GAME_DURATION,
             this.allowedLetters = this.generateAllowedLetters();
             this.wordSubmissions = [];
-            this.scoreTotal = 0;
+            //this.scoreTotal = 0;
             this.currentAttempt = '';
             this.timer = this.startTimer();
         },
@@ -261,7 +263,14 @@ var app = new Vue({
             // Do we already have a wordSubmission with this word? 
             // TODO 17
             // replace the hardcoded 'false' with the real answer
-            var alreadyUsed = false;
+            let alreadyUsed;
+            for (var i = 0; i < this.wordSubmissions.length; i++){
+                if (this.wordSubmissions[i].word == word){
+                    alreadyUsed = true;
+                    return;
+                }
+                alreadyUsed = false;
+            }
             if (this.containsOnlyAllowedLetters && !alreadyUsed) {
                 // add the word, with it's score.
                 // set loading to true, and isRealWord to null, to represent
@@ -279,6 +288,7 @@ var app = new Vue({
             }
             // TODO 10
             // now that we've added the word, clear out the text input./YOU STILL HAVEN'T DONE THIS
+            this.currentAttempt = "";
         },
         checkIfWordIsReal: function(word) {
             
@@ -299,13 +309,13 @@ var app = new Vue({
                         word.isRealWord = true;
                         word.loading = false;
                         
-                        console.log("isREalWord line 300      " + word.isRealWord);
+                        
                         
 
 
                     } else {
                         word.isRealWord = false;
-                        console.log("are any words false?");
+                        
                         word.loading = false;
                     }  
                     
