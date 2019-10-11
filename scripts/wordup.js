@@ -156,10 +156,10 @@ var app = new Vue({
         
         currentScore: function () {
           
-            /**
-             * Returns the user's current total score, which is the sum of the
-             * scores of all the wordSubmissions whose word is a real dictionary word
-             */
+            console.dir("wordSubmissions line 159    "   + JSON.stringify(this.wordSubmissions));
+             //Returns the user's current total score, which is the sum of the
+             //scores of all the wordSubmissions whose word is a real dictionary word
+             
             // TODO 16
             // add up all the wordScore values from the words in this.wordSubmissions
             // be sure not to include any that aren't real words.
@@ -167,6 +167,7 @@ var app = new Vue({
                 
                var retWord = this.wordSubmissions[i];
                console.log("retWord.word   " + retWord.word);
+               console.log("regWord.score      " + retWord.score);
                console.log("is retWord real:    " + Boolean(retWord.isRealWord));
 
             }
@@ -174,6 +175,7 @@ var app = new Vue({
             
             
         },
+         
         gameInProgress: function() {
             return this.secondsRemaining > 0 && this.timer !== null;
         },
@@ -297,7 +299,7 @@ var app = new Vue({
                         word.isRealWord = true;
                         word.loading = false;
                         
-                        console.log("isREalWord line 292      " + word.isRealWord);
+                        console.log("isREalWord line 300      " + word.isRealWord);
                         
 
 
@@ -315,7 +317,7 @@ var app = new Vue({
                 .catch(error => console.error(error));
         },
 
-
+       
         // ----------------- THE TIMER -----------------
         // don't fret about these too hard. You can ignore these functions
         // unless you really want to learn about them.
